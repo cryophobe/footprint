@@ -785,8 +785,125 @@ body{
 .gd-stat-label{font-size:8px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
 .gd-more-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
 
-/* ─── SVG ICONS ──── */
-.svg-icon{display:inline-flex;align-items:center;justify-content:center;}
+.badge-orphan{background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.22);color:rgba(248,113,113,0.85);}
+
+/* ─── GROUP SEARCH BAR ──── */
+.group-search-glass{
+  margin:0 16px 10px;
+  padding:5px 5px 5px 14px;
+  border-radius:var(--r-lg);
+  background:rgba(4,8,16,0.55);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;align-items:center;gap:8px;
+}
+.group-search-input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:var(--fs-sm);color:var(--white);
+  font-family:'DM Sans',sans-serif;padding:4px 0;
+}
+.group-search-input::placeholder{color:var(--muted2);}
+
+/* ─── SEARCH EXCLUDE ──── */
+.exclude-glass{
+  margin:0 16px 10px;
+  padding:10px 14px;
+  border-radius:var(--r);
+  background:rgba(4,8,16,0.5);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.exclude-label{font-size:var(--fs-xs);color:var(--muted);font-weight:500;margin-bottom:6px;}
+.exclude-tags{display:flex;flex-wrap:wrap;gap:5px;min-height:20px;}
+.exclude-tag{
+  display:flex;align-items:center;gap:5px;
+  font-size:var(--fs-xs);font-weight:500;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(248,113,113,0.1);
+  border:1px solid rgba(248,113,113,0.25);
+  color:rgba(248,113,113,0.9);cursor:pointer;
+}
+.exclude-tag:hover{background:rgba(248,113,113,0.18);}
+.exclude-hint{font-size:9px;color:var(--muted2);margin-top:5px;}
+.exclude-dropdown{
+  margin-top:8px;
+  max-height:160px;overflow-y:auto;
+  border-radius:var(--r-sm);
+  border:1px solid var(--glass-border);
+  background:rgba(4,8,20,0.85);
+  display:none;
+}
+.exclude-dropdown.open{display:block;}
+.exclude-opt{
+  padding:8px 12px;font-size:var(--fs-xs);color:var(--white2);
+  cursor:pointer;transition:background .12s;
+  border-bottom:1px solid rgba(59,127,245,0.05);
+}
+.exclude-opt:last-child{border-bottom:none;}
+.exclude-opt:hover{background:rgba(59,127,245,0.08);}
+
+/* ─── ASK PAGE ──── */
+.ask-glass{
+  margin:12px 16px;padding:20px;
+  border-radius:var(--r-xl);
+  background:rgba(8,16,32,0.6);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:inset 0 1px 0 var(--glass-shine);
+}
+.ask-input{
+  width:100%;background:rgba(4,8,16,0.6);
+  border:1px solid var(--glass-border);
+  border-radius:var(--r);color:var(--white);
+  font-family:'DM Sans',sans-serif;font-size:var(--fs-base);
+  padding:12px 14px;outline:none;resize:none;
+  min-height:80px;line-height:1.5;
+  transition:border-color .18s;
+}
+.ask-input:focus{border-color:rgba(59,127,245,0.35);}
+.ask-input::placeholder{color:var(--muted2);}
+.ask-btn{
+  margin-top:10px;width:100%;
+  font-size:var(--fs-sm);font-weight:600;letter-spacing:.04em;
+  color:var(--white);
+  background:linear-gradient(135deg,rgba(59,127,245,0.25),rgba(30,60,130,0.3));
+  border:1px solid rgba(59,127,245,0.3);
+  padding:11px;border-radius:var(--r);
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .2s;
+}
+.ask-btn:hover{background:linear-gradient(135deg,rgba(59,127,245,0.35),rgba(30,60,130,0.45));border-color:rgba(59,127,245,0.5);}
+.ask-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ask-keywords{
+  margin:10px 0 6px;display:flex;flex-wrap:wrap;gap:5px;
+}
+.ask-kw{
+  font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:.03em;
+  background:rgba(59,127,245,0.08);border:1px solid rgba(59,127,245,0.18);color:rgba(91,159,255,0.85);
+}
+.ask-answer{
+  padding:14px;border-radius:var(--r);
+  background:rgba(4,8,20,0.5);
+  border:1px solid var(--glass-border);
+  font-size:var(--fs-sm);color:var(--white2);
+  line-height:1.7;margin-bottom:10px;
+  white-space:pre-wrap;
+}
+.ask-evidence-title{font-size:var(--fs-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px;}
+.ask-ev-item{
+  padding:10px 12px;border-radius:var(--r-sm);margin-bottom:4px;
+  background:rgba(6,12,24,0.4);border:1px solid var(--glass-border);
+  cursor:pointer;transition:all .15s;
+}
+.ask-ev-item:hover{background:rgba(59,127,245,0.06);border-color:rgba(59,127,245,0.2);}
+.ask-ev-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:8px;}
+.ask-ev-chat{font-size:var(--fs-xs);font-weight:600;color:var(--accent2);}
+.ask-ev-date{font-size:9px;color:var(--muted2);font-family:'DM Mono',monospace;}
+.ask-ev-text{font-size:var(--fs-xs);color:var(--muted);line-height:1.5;}
+.ask-step{font-size:var(--fs-xs);color:var(--muted2);padding:8px 0;display:flex;align-items:center;gap:8px;}
+.ask-step-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ldot .8s ease-in-out infinite;flex-shrink:0;}
+
+
 
 /* ─── SCROLL FADE IN ──── */
 .fade-in{animation:fadeIn .4s ease forwards;}
@@ -1041,11 +1158,16 @@ body{
     <div class="page-header-title">Groups</div>
     <div class="page-header-sub" id="groups-page-sub">All monitored channels</div>
   </div>
+  <div class="group-search-glass">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color:var(--muted2);flex-shrink:0;"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M9 9L12 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    <input class="group-search-input" id="group-search-input" type="text" placeholder="Search groups…" autocomplete="off" spellcheck="false" oninput="onGroupSearchInput()"/>
+  </div>
   <div class="filter-glass">
     <button class="sort-chip active" onclick="setGroupSort('msg_count',this)">Most Active</button>
     <button class="sort-chip" onclick="setGroupSort('last',this)">Recent</button>
     <button class="sort-chip" onclick="setGroupSort('active',this)">In Channel</button>
     <button class="sort-chip" onclick="setGroupSort('private',this)">Private</button>
+    <button class="sort-chip" onclick="setGroupSort('orphan',this)">Unregistered</button>
   </div>
   <div class="groups-panel" id="groups-list-page">
     <div class="loading-state"><span class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span></div>
@@ -1074,6 +1196,17 @@ body{
   <div class="filter-glass">
     <button class="sort-chip active" onclick="setSearchOrder('newest',this)">Newest</button>
     <button class="sort-chip" onclick="setSearchOrder('oldest',this)">Oldest</button>
+  </div>
+  <!-- Exclude groups UI -->
+  <div class="exclude-glass">
+    <div class="exclude-label">Exclude up to 2 groups</div>
+    <div class="exclude-tags" id="exclude-tags">
+      <span style="font-size:9px;color:var(--muted2);" id="exclude-placeholder">None excluded</span>
+    </div>
+    <div class="exclude-hint" id="exclude-hint"></div>
+    <input id="exclude-search" class="group-search-input" style="margin-top:6px;background:rgba(4,8,16,0.5);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:5px 10px;font-size:var(--fs-xs);display:none;" placeholder="Type to find a group to exclude…" oninput="onExcludeInput()" autocomplete="off"/>
+    <div class="exclude-dropdown" id="exclude-dropdown"></div>
+    <button onclick="toggleExcludeSearch()" id="exclude-add-btn" class="date-go-btn" style="margin-top:8px;font-size:9px;padding:4px 12px;">+ Add group to exclude</button>
   </div>
   <div class="search-results-header" id="search-results-header" style="display:none;">
     <div class="sr-count" id="sr-count"></div>
@@ -1149,6 +1282,19 @@ body{
 
 <!-- GROUP DETAIL (injected dynamically) -->
 
+<!-- ASK AI PAGE -->
+<div class="page" id="page-ask">
+  <div class="page-header-glass">
+    <div class="page-header-title">Ask a Question</div>
+    <div class="page-header-sub">AI-powered insights from your message history</div>
+  </div>
+  <div class="ask-glass">
+    <textarea class="ask-input" id="ask-input" placeholder="Ask anything about the user's activity… e.g. Does the user have a pet? What topics do they talk about most?"></textarea>
+    <button class="ask-btn" id="ask-btn" onclick="doAsk()">Ask AI</button>
+  </div>
+  <div id="ask-results" style="padding:0 16px 16px;"></div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <div class="bnav-glass">
@@ -1197,6 +1343,16 @@ body{
         </svg>
       </div>
       <span class="bnav-label">Media</span>
+    </button>
+    <button class="bnav-item" data-page="ask" onclick="router.go('ask')">
+      <div class="bnav-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M7 7C7 5.9 7.9 5 9 5C10.1 5 11 5.9 11 7C11 8.5 9 9 9 10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="9" cy="12.5" r="0.8" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="bnav-label">Ask</span>
     </button>
   </div>
 </div>
@@ -1300,6 +1456,7 @@ const router={
     if(page==='media'&&!this._mediaLoaded){this._mediaLoaded=true;initMediaPage();}
     if(page==='user')initUser(params.id);
     if(page==='search')document.getElementById('search-input')?.focus();
+    if(page==='ask')document.getElementById('ask-input')?.focus();
   },
   back(){this.go('home');}
 };
@@ -1546,40 +1703,34 @@ async function loadUserGroups(){
     const r=await fetch(`${API}/groups/top?by=${_groupTabSort}&limit=60`);const d=await r.json();
     list.innerHTML='';
     if(!d.length){list.innerHTML='<div class="empty-state">No groups</div>';return;}
-    d.forEach((g,i)=>{
-      const row=document.createElement('div');row.className='group-row';
-      row.onclick=()=>showGroupDetail(g);
-      const priv=g.isPrivate?`<span class="badge badge-private">Private</span>`:`<span class="badge badge-public">Public</span>`;
-      row.innerHTML=`
-        <div class="group-idx">${i+1}</div>
-        <div class="group-icon" style="color:var(--accent2);">${mediaSVG(9)}</div>
-        <div class="group-name">
-          <div class="group-name-text">${g.title||g.chatTitle||'Unknown'}</div>
-          <div class="group-id">${g.group_id||''}</div>
-        </div>
-        ${priv}
-        <div class="group-count">${fmt(g.msg_count_in_group)}</div>
-      `;
-      list.appendChild(row);
-    });
+    d.forEach((g,i)=>renderGroupRow(g,i,list));
   }catch(e){list.innerHTML='<div class="empty-state">Error loading</div>';}
 }
 
 /* ══ RENDER MESSAGES ══ */
-function renderMessages(msgs,container){
-  msgs.forEach(m=>{
-    const row=document.createElement('div');row.className='msg-item';
-    const text=m.text?(m.text.length>200?m.text.slice(0,200)+'…':m.text):'';
-    const badges=[];
-    if(m.isReply)badges.push(`<span class="msg-badge msg-badge-reply">↩ Reply</span>`);
-    if(m.mediaKind!=null)badges.push(`<span class="msg-badge msg-badge-media">${mediaLabel(m.mediaKind)}</span>`);
-    row.innerHTML=`
+function msgLink(m) {
+  const tag = (m.chatTag || '').replace('@', '');
+  if (tag && m.messageid) return `https://t.me/${tag}/${m.messageid}`;
+  return null;
+}
+function renderMessages(msgs, container) {
+  msgs.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'msg-item';
+    const link = msgLink(m);
+    if (link) { row.style.cursor = 'pointer'; row.onclick = () => window.open(link, '_blank'); }
+    const text = m.text ? (m.text.length > 200 ? m.text.slice(0, 200) + '…' : m.text) : '';
+    const badges = [];
+    if (m.isReply) badges.push(`<span class="msg-badge msg-badge-reply">↩ Reply</span>`);
+    if (m.mediaKind != null) badges.push(`<span class="msg-badge msg-badge-media">${mediaLabel(m.mediaKind)}</span>`);
+    if (link) badges.push(`<span class="msg-badge" style="background:rgba(59,127,245,0.06);border:1px solid rgba(59,127,245,0.14);color:var(--muted2);">↗ Open</span>`);
+    row.innerHTML = `
       <div class="msg-item-head">
-        <span class="msg-chat-tag">${m.chatTitle||'Unknown'}</span>
+        <span class="msg-chat-tag">${m.chatTitle || 'Unknown'}</span>
         <span class="msg-date-tag">${fmtDateTime(m.date)}</span>
       </div>
-      ${text?`<div class="msg-text-body">${text}</div>`:'<div class="msg-text-body" style="color:var(--muted2);">[No text]</div>'}
-      ${badges.length?`<div class="msg-badges">${badges.join('')}</div>`:''}
+      ${text ? `<div class="msg-text-body">${text}</div>` : '<div class="msg-text-body" style="color:var(--muted2);">[No text]</div>'}
+      ${badges.length ? `<div class="msg-badges">${badges.join('')}</div>` : ''}
     `;
     container.appendChild(row);
   });
@@ -1598,8 +1749,53 @@ document.querySelectorAll('.tab-item').forEach(tab=>{
 
 /* ══ GROUPS PAGE ══ */
 let _groupSort='msg_count',_groupsPage=1,_groupsData=[];
+let _groupSearchActive=false;
+
 async function initGroups(){await loadGroupsPage(true);}
+
+function onGroupSearchInput(){
+  const q=document.getElementById('group-search-input').value.trim();
+  if(!q){_groupSearchActive=false;loadGroupsPage(true);return;}
+  _groupSearchActive=true;
+  searchGroups(q);
+}
+
+async function searchGroups(q){
+  const list=document.getElementById('groups-list-page');
+  const sub=document.getElementById('groups-page-sub');
+  loading(list);
+  document.getElementById('groups-more-btn').style.display='none';
+  try{
+    const r=await fetch(`${API}/groups/search?q=${encodeURIComponent(q)}`);
+    const d=await r.json();
+    list.innerHTML='';
+    if(!Array.isArray(d)||!d.length){list.innerHTML='<div class="empty-state">No groups found</div>';if(sub)sub.textContent='0 results';return;}
+    if(sub)sub.textContent=`${d.length} result${d.length!==1?'s':''}`;
+    d.forEach((g,i)=>renderGroupRow(g,i,list));
+  }catch(e){list.innerHTML='<div class="empty-state">Search error</div>';}
+}
+
+function renderGroupRow(g,i,list){
+  const row=document.createElement('div');row.className='group-row';
+  row.onclick=()=>showGroupDetail(g);
+  const privBadge=g.isPrivate?`<span class="badge badge-private">Private</span>`:`<span class="badge badge-public">Public</span>`;
+  const orphanBadge=g.orphan?`<span class="badge badge-orphan">Unregistered</span>`:'';
+  const count=g.msg_count_in_group||g.msg_count||g.message_count||0;
+  row.innerHTML=`
+    <div class="group-idx">${i+1}</div>
+    <div class="group-icon" style="color:var(--accent2);">${mediaSVG(9)}</div>
+    <div class="group-name">
+      <div class="group-name-text">${g.title||g.chatTitle||'Unknown'}</div>
+      <div class="group-id">${g.group_id||g.chatid||''}</div>
+    </div>
+    ${g.orphan?orphanBadge:privBadge}
+    <div class="group-count">${fmt(count)}</div>
+  `;
+  list.appendChild(row);
+}
+
 async function loadGroupsPage(reset=false){
+  if(_groupSearchActive)return;
   if(reset)_groupsPage=1;
   const list=document.getElementById('groups-list-page');
   const sub=document.getElementById('groups-page-sub');
@@ -1608,6 +1804,7 @@ async function loadGroupsPage(reset=false){
     let url;
     if(_groupSort==='active')url=`${API}/groups/active`;
     else if(_groupSort==='private')url=`${API}/groups/private`;
+    else if(_groupSort==='orphan')url=`${API}/groups/orphans`;
     else url=`${API}/groups/top?by=${_groupSort}&limit=200`;
     const r=await fetch(url);const d=await r.json();
     _groupsData=Array.isArray(d)?d:[];
@@ -1615,22 +1812,7 @@ async function loadGroupsPage(reset=false){
     if(reset)list.innerHTML='';
     if(!_groupsData.length){list.innerHTML='<div class="empty-state">No groups</div>';return;}
     if(sub)sub.textContent=`${_groupsData.length} groups`;
-    slice.forEach((g,i)=>{
-      const row=document.createElement('div');row.className='group-row';
-      row.onclick=()=>showGroupDetail(g);
-      const priv=g.isPrivate?`<span class="badge badge-private">Private</span>`:`<span class="badge badge-public">Public</span>`;
-      row.innerHTML=`
-        <div class="group-idx">${start+i+1}</div>
-        <div class="group-icon" style="color:var(--accent2);">${mediaSVG(9)}</div>
-        <div class="group-name">
-          <div class="group-name-text">${g.title||g.chatTitle||'Unknown'}</div>
-          <div class="group-id">${g.group_id||g.chatid||''}</div>
-        </div>
-        ${priv}
-        <div class="group-count">${fmt(g.msg_count_in_group||g.message_count)}</div>
-      `;
-      list.appendChild(row);
-    });
+    slice.forEach((g,i)=>renderGroupRow(g,start+i,list));
     const moreBtn=document.getElementById('groups-more-btn');
     moreBtn.style.display=(start+30)<_groupsData.length?'flex':'none';
   }catch(e){if(reset)list.innerHTML='<div class="empty-state">Error loading</div>';}
@@ -1638,6 +1820,8 @@ async function loadGroupsPage(reset=false){
 function loadMoreGroups(){_groupsPage++;loadGroupsPage();}
 function setGroupSort(sort,btn){
   _groupSort=sort;
+  document.getElementById('group-search-input').value='';
+  _groupSearchActive=false;
   btn.closest('.filter-glass').querySelectorAll('.sort-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   router._groupsLoaded=false;initGroups();
@@ -1813,6 +1997,93 @@ function loadMoreGdMedia(){_gdMediaPage++;loadGdMedia();}
 
 /* ══ SEARCH ══ */
 let _searchPage=1,_searchQ='',_searchOrder='newest';
+let _excludeGroups=[]; // [{chatid, title}]
+let _allGroupsCache=null;
+
+async function getAllGroupsForExclude(){
+  if(_allGroupsCache)return _allGroupsCache;
+  try{
+    const r=await fetch(`${API}/groups/top?by=msg_count&limit=200`);
+    const d=await r.json();
+    _allGroupsCache=Array.isArray(d)?d:[];
+  }catch(e){_allGroupsCache=[];}
+  return _allGroupsCache;
+}
+
+function toggleExcludeSearch(){
+  const inp=document.getElementById('exclude-search');
+  const dd=document.getElementById('exclude-dropdown');
+  const btn=document.getElementById('exclude-add-btn');
+  if(inp.style.display==='none'||!inp.style.display){
+    inp.style.display='block';inp.value='';inp.focus();
+    btn.textContent='Cancel';
+    dd.innerHTML='';dd.classList.remove('open');
+  } else {
+    inp.style.display='none';dd.classList.remove('open');
+    btn.textContent='+ Add group to exclude';
+  }
+}
+
+async function onExcludeInput(){
+  if(_excludeGroups.length>=2){document.getElementById('exclude-hint').textContent='Max 2 groups reached';return;}
+  const q=document.getElementById('exclude-search').value.trim().toLowerCase();
+  const dd=document.getElementById('exclude-dropdown');
+  if(!q){dd.classList.remove('open');return;}
+  const groups=await getAllGroupsForExclude();
+  const matches=groups.filter(g=>
+    (g.title&&g.title.toLowerCase().includes(q))||
+    (g.username&&g.username.toLowerCase().includes(q))
+  ).slice(0,10);
+  dd.innerHTML='';
+  if(!matches.length){dd.innerHTML='<div class="exclude-opt" style="color:var(--muted2);">No groups found</div>';dd.classList.add('open');return;}
+  matches.forEach(g=>{
+    if(_excludeGroups.find(e=>e.chatid===(g.group_id||g.chatid)))return;
+    const opt=document.createElement('div');opt.className='exclude-opt';
+    opt.textContent=(g.title||'Unknown')+' · '+(g.msg_count_in_group||0)+' msgs';
+    opt.onclick=()=>{
+      addExcludeGroup({chatid:g.group_id||g.chatid,title:g.title||'Unknown'});
+      dd.classList.remove('open');
+      document.getElementById('exclude-search').style.display='none';
+      document.getElementById('exclude-add-btn').textContent='+ Add group to exclude';
+    };
+    dd.appendChild(opt);
+  });
+  dd.classList.add('open');
+}
+
+function addExcludeGroup(g){
+  if(_excludeGroups.length>=2||_excludeGroups.find(e=>e.chatid===g.chatid))return;
+  _excludeGroups.push(g);
+  renderExcludeTags();
+  if(_searchQ)doSearch();
+}
+
+function removeExcludeGroup(chatid){
+  _excludeGroups=_excludeGroups.filter(e=>e.chatid!==chatid);
+  renderExcludeTags();
+  if(_searchQ)doSearch();
+}
+
+function renderExcludeTags(){
+  const container=document.getElementById('exclude-tags');
+  const placeholder=document.getElementById('exclude-placeholder');
+  const hint=document.getElementById('exclude-hint');
+  container.innerHTML='';
+  if(!_excludeGroups.length){
+    container.appendChild(Object.assign(document.createElement('span'),{textContent:'None excluded',style:'font-size:9px;color:var(--muted2);'}));
+    hint.textContent='';
+    document.getElementById('exclude-add-btn').style.display='inline-flex';
+    return;
+  }
+  _excludeGroups.forEach(g=>{
+    const tag=document.createElement('div');tag.className='exclude-tag';
+    tag.innerHTML=`${g.title} <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2L8 8M8 2L2 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+    tag.onclick=()=>removeExcludeGroup(g.chatid);
+    container.appendChild(tag);
+  });
+  hint.textContent=_excludeGroups.length>=2?'Max 2 groups':'';
+  document.getElementById('exclude-add-btn').style.display=_excludeGroups.length>=2?'none':'inline-flex';
+}
 
 document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
 
@@ -1831,9 +2102,11 @@ async function doSearch(){
   const moreBtn=document.getElementById('search-more-btn');
   loading(results);header.style.display='none';moreBtn.style.display='none';
   try{
-    const r=await fetch(`${API}/search?q=${encodeURIComponent(q)}&page=1&order=${_searchOrder}`);const d=await r.json();
+    let url=`${API}/search?q=${encodeURIComponent(q)}&page=1&order=${_searchOrder}`;
+    if(_excludeGroups.length)url+=`&exclude=${_excludeGroups.map(e=>e.chatid).join(',')}`;
+    const r=await fetch(url);const d=await r.json();
     results.innerHTML='';header.style.display='flex';
-    document.getElementById('sr-count').innerHTML=`<strong>${fmt(d.total)}</strong> result${d.total!==1?'s':''} for "${q}"`;
+    document.getElementById('sr-count').innerHTML=`<strong>${fmt(d.total)}</strong> result${d.total!==1?'s':''} for "${q}"${_excludeGroups.length?' ('+_excludeGroups.length+' group'+(_excludeGroups.length>1?'s':'')+' excluded)':''}`;
     document.getElementById('sr-pages').textContent=`Page 1 of ${d.pages}`;
     if(!d.data?.length){results.innerHTML='<div class="empty-state">No results found</div>';return;}
     renderMessages(d.data||[],results);
@@ -1847,7 +2120,9 @@ async function loadMoreSearch(){
   const moreBtn=document.getElementById('search-more-btn');
   moreBtn.textContent='Loading…';moreBtn.disabled=true;
   try{
-    const r=await fetch(`${API}/search?q=${encodeURIComponent(_searchQ)}&page=${_searchPage}&order=${_searchOrder}`);const d=await r.json();
+    let url=`${API}/search?q=${encodeURIComponent(_searchQ)}&page=${_searchPage}&order=${_searchOrder}`;
+    if(_excludeGroups.length)url+=`&exclude=${_excludeGroups.map(e=>e.chatid).join(',')}`;
+    const r=await fetch(url);const d=await r.json();
     renderMessages(d.data||[],results);
     document.getElementById('sr-pages').textContent=`Page ${_searchPage} of ${d.pages}`;
     moreBtn.textContent='Load more';moreBtn.disabled=false;
@@ -1931,6 +2206,65 @@ function setMediaKind(kind,btn){
   btn.closest('.filter-glass').querySelectorAll('.sort-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');loadMediaPage(true);
 }
+
+/* ══ ASK AI PAGE ══ */
+async function doAsk(){
+  const q=document.getElementById('ask-input').value.trim();
+  if(!q)return;
+  const btn=document.getElementById('ask-btn');
+  const results=document.getElementById('ask-results');
+  btn.disabled=true;btn.textContent='Thinking…';
+  results.innerHTML=`
+    <div class="ask-step"><div class="ask-step-dot"></div>Extracting keywords from your question…</div>
+  `;
+  try{
+    const r=await fetch(`${API}/ask`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question:q})
+    });
+    const d=await r.json();
+    if(d.error){results.innerHTML=`<div class="empty-state">Error: ${d.error}</div>`;btn.disabled=false;btn.textContent='Ask AI';return;}
+
+    let html='';
+    // Keywords
+    if(d.keywords?.length){
+      html+=`<div class="ask-evidence-title">Keywords searched (${d.keywords.length})</div>`;
+      html+=`<div class="ask-keywords">${d.keywords.map(k=>`<span class="ask-kw">${k}</span>`).join('')}</div>`;
+    }
+    // Answer
+    html+=`<div class="ask-evidence-title">Answer</div>`;
+    html+=`<div class="ask-answer">${d.answer||'No answer generated.'}</div>`;
+    // Evidence
+    if(d.evidence?.length){
+      html+=`<div class="ask-evidence-title">Evidence messages (${d.evidence.length})</div>`;
+      results.innerHTML=html;
+      d.evidence.forEach(ev=>{
+        const evEl=document.createElement('div');evEl.className='ask-ev-item';
+        const link=ev.link||null;
+        if(link){evEl.style.cursor='pointer';evEl.onclick=()=>window.open(link,'_blank');}
+        evEl.innerHTML=`
+          <div class="ask-ev-head">
+            <span class="ask-ev-chat">${ev.chatTitle||'Unknown'}${ev.chatTag?' ('+ev.chatTag+')':''}</span>
+            <span class="ask-ev-date">${fmtDateTime(ev.date)}</span>
+          </div>
+          <div class="ask-ev-text">${(ev.text||'').slice(0,120)}${ev.text&&ev.text.length>120?'…':''}</div>
+          ${link?`<div style="margin-top:4px;font-size:9px;color:var(--accent2);">↗ Open message #${ev.messageid}</div>`:''}
+        `;
+        results.appendChild(evEl);
+      });
+    } else {
+      results.innerHTML=html;
+    }
+  }catch(e){
+    results.innerHTML=`<div class="empty-state">Request failed. Is the server running?</div>`;
+  }
+  btn.disabled=false;btn.textContent='Ask AI';
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.ctrlKey&&router.current==='ask')doAsk();
+});
 
 /* ══ BOOT ══ */
 ensureGroupDetailPage();

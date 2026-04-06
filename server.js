@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const axios = require("axios");
 const app = express();
 const PORT = 3000;
 
@@ -8,9 +9,11 @@ const PORT = 3000;
 ================================ */
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
+app.use(express.json());
 
 /* ===============================
    FOOTPRINT USERS REGISTRY
@@ -223,16 +226,20 @@ app.get("/messages/date-range", (req, res) => {
 
 /* ===============================
    ROUTE: SEARCH MESSAGES
-   GET /search?q=hello&page=1&chatid=xxx
+   GET /search?q=hello&page=1&chatid=xxx&exclude=id1,id2
 ================================ */
 app.get("/search", (req, res) => {
-  const { q, page = 1, order = "newest", chatid } = req.query;
+  const { q, page = 1, order = "newest", chatid, exclude } = req.query;
   if (!q) return res.status(400).json({ error: "Missing keyword" });
   const keyword = q.toLowerCase();
   let results = messages.filter(
     (m) => m.text && m.text.toLowerCase().includes(keyword)
   );
   if (chatid) results = results.filter((m) => m.chatid === Number(chatid));
+  if (exclude) {
+    const excludeIds = exclude.split(",").slice(0, 2).map(Number).filter(Boolean);
+    if (excludeIds.length) results = results.filter((m) => !excludeIds.includes(m.chatid));
+  }
   results = sortByDate(results, order);
   res.json(paginate(results, page));
 });
@@ -480,6 +487,211 @@ app.get("/spotted-groups/:id", (req, res) => {
   const group = groups.find((g) => g.group_id === id);
   if (!group) return res.status(404).json({ error: "Not found" });
   res.json(group);
+});
+
+/* ===============================
+   ROUTE: ORPHAN GROUPS
+   Groups present in messages but not registered in groups.json
+   GET /groups/orphans
+================================ */
+app.get("/groups/orphans", (req, res) => {
+  const registeredIds = new Set(groups.map((g) => g.group_id));
+  const orphanMap = new Map();
+  messages.forEach((m) => {
+    if (!registeredIds.has(m.chatid) && !orphanMap.has(m.chatid)) {
+      orphanMap.set(m.chatid, {
+        chatid: m.chatid,
+        title: m.chatTitle,
+        username: m.chatTag,
+        link: m.link,
+        in_channel: m.in_channel,
+        orphan: true,
+      });
+    }
+  });
+  // Attach message count per orphan
+  const result = [...orphanMap.values()].map((g) => ({
+    ...g,
+    msg_count: messages.filter((m) => m.chatid === g.chatid).length,
+  }));
+  result.sort((a, b) => b.msg_count - a.msg_count);
+  res.json(result);
+});
+
+/* ===============================
+   ROUTE: SEARCH GROUPS
+   GET /groups/search?q=keyword
+================================ */
+app.get("/groups/search", (req, res) => {
+  const { q } = req.query;
+  if (!q) return res.status(400).json({ error: "Missing keyword" });
+  const keyword = q.toLowerCase();
+
+  // Build a merged group list (registered + orphans)
+  const registeredIds = new Set(groups.map((g) => g.group_id));
+  const fromMessages = new Map();
+  messages.forEach((m) => {
+    if (!fromMessages.has(m.chatid)) {
+      fromMessages.set(m.chatid, {
+        group_id: m.chatid,
+        title: m.chatTitle,
+        username: m.chatTag,
+        link: m.link,
+        in_channel: m.in_channel,
+        orphan: !registeredIds.has(m.chatid),
+        msg_count_in_group: 0,
+      });
+    }
+    fromMessages.get(m.chatid).msg_count_in_group++;
+  });
+  // Merge with groups.json data
+  groups.forEach((g) => {
+    if (fromMessages.has(g.group_id)) {
+      Object.assign(fromMessages.get(g.group_id), {
+        isPrivate: g.isPrivate,
+        last: g.last,
+      });
+    }
+  });
+
+  const all = [...fromMessages.values()];
+  const results = all.filter(
+    (g) =>
+      (g.title && g.title.toLowerCase().includes(keyword)) ||
+      (g.username && g.username.toLowerCase().includes(keyword))
+  );
+  res.json(results);
+});
+
+/* ===============================
+   ROUTE: ASK A QUESTION (AI-powered)
+   POST /ask  { question: "..." }
+   Two-phase: keyword extraction → message search → AI deduction
+================================ */
+app.post("/ask", async (req, res) => {
+  const { question } = req.body || {};
+  if (!question) return res.status(400).json({ error: "Missing question" });
+
+  const LONGCAT_API_KEY = process.env.LONGCAT_API_KEY || "ak_2ep6ba2Ww0pn5cH09U2Mq3Eo0ez1M";
+  const LONGCAT_URL = "https://api.longcat.chat/openai/v1/chat/completions";
+
+  try {
+    // Phase 1: extract up to 20 keywords
+    const kwRes = await axios.post(LONGCAT_URL, {
+      model: "LongCat-Flash-Lite",
+      max_tokens: 400,
+      messages: [
+        {
+          role: "system",
+          content:
+            'You are a keyword extractor. The user will ask a question about a Telegram user\'s activity. ' +
+            'Return ONLY a JSON array of up to 20 search keywords/phrases that would help find relevant messages. ' +
+            'Each keyword should be lowercase, short, and highly relevant. ' +
+            'Example output: ["dog","have a pet","my cat","puppy","adopted","animal"]',
+        },
+        { role: "user", content: question },
+      ],
+    }, {
+      headers: {
+        "Authorization": `Bearer ${LONGCAT_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const kwData = kwRes.data;
+    let keywords = [];
+    try {
+      const raw = kwData.choices?.[0]?.message?.content || "[]";
+      const clean = raw.replace(/```json|```/g, "").trim();
+      keywords = JSON.parse(clean);
+      if (!Array.isArray(keywords)) keywords = [];
+    } catch {
+      keywords = [];
+    }
+    if (!keywords.length) {
+      return res.json({ answer: "I couldn't extract keywords from your question.", keywords: [], evidence: [] });
+    }
+
+    // Phase 2: search messages for all keywords (up to 200 unique messages)
+    const seen = new Set();
+    const matched = [];
+    for (const kw of keywords.slice(0, 20)) {
+      const kwLower = kw.toLowerCase();
+      for (const m of messages) {
+        if (matched.length >= 200) break;
+        if (m.text && m.text.toLowerCase().includes(kwLower) && !seen.has(m.messageid)) {
+          seen.add(m.messageid);
+          matched.push({
+            messageid: m.messageid,
+            chatid: m.chatid,
+            chatTitle: m.chatTitle,
+            chatTag: m.chatTag,
+            text: m.text.slice(0, 300),
+            date: m.date,
+          });
+        }
+      }
+      if (matched.length >= 200) break;
+    }
+
+    if (!matched.length) {
+      return res.json({
+        answer: "No relevant messages found in the database to answer your question.",
+        keywords,
+        evidence: [],
+      });
+    }
+
+    // Phase 3: deduce answer from matched messages
+    const msgContext = matched
+      .slice(0, 200)
+      .map(
+        (m) =>
+          `[ID:${m.messageid} | Chat:${m.chatTitle}${m.chatTag ? " ("+m.chatTag+")" : ""} | ${m.date}]\n${m.text}`
+      )
+      .join("\n---\n");
+
+    const ansRes = await axios.post(LONGCAT_URL, {
+      model: "LongCat-Flash-Lite",
+      max_tokens: 800,
+      messages: [
+        {
+          role: "system",
+          content:
+            `You are an analyst reviewing Telegram messages sent by the user @peak_nonchalant. ` +
+            `Based on the message excerpts provided, answer the user's question as accurately as possible. ` +
+            `Cite specific message IDs and chat names as evidence where relevant, like: "In message #78 from BlueWorld (@blueworld237), they said...". ` +
+            `If evidence is inconclusive, say so clearly. Be concise but thorough.`,
+        },
+        {
+          role: "user",
+          content: `Question: ${question}\n\nRelevant messages:\n${msgContext}`,
+        },
+      ],
+    }, {
+      headers: {
+        "Authorization": `Bearer ${LONGCAT_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const ansData = ansRes.data;
+    const answer = ansData.choices?.[0]?.message?.content || "Unable to generate an answer.";
+
+    // Build message links for evidence
+    const evidence = matched.slice(0, 20).map((m) => ({
+      messageid: m.messageid,
+      chatid: m.chatid,
+      chatTitle: m.chatTitle,
+      chatTag: m.chatTag,
+      text: m.text.slice(0, 100),
+      date: m.date,
+      link: m.chatTag ? `https://t.me/${m.chatTag.replace("@", "")}/${m.messageid}` : null,
+    }));
+
+    res.json({ answer, keywords, evidence });
+  } catch (err) {
+    console.error("/ask error:", err);
+    res.status(500).json({ error: "AI request failed", detail: err.message });
+  }
 });
 
 /* ===============================

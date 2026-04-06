@@ -20,7 +20,7 @@ const FOOTPRINT_USERS = [
   {
     id: 1655857131,
     name: "Blue",
-    handle: "@blue",
+    handle: "@peak_nonchalant",
   },
 ];
 

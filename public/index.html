@@ -842,69 +842,6 @@ body{
 .exclude-opt:last-child{border-bottom:none;}
 .exclude-opt:hover{background:rgba(59,127,245,0.08);}
 
-/* ─── ASK PAGE ──── */
-.ask-glass{
-  margin:12px 16px;padding:20px;
-  border-radius:var(--r-xl);
-  background:rgba(8,16,32,0.6);
-  border:1px solid var(--glass-border);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  box-shadow:inset 0 1px 0 var(--glass-shine);
-}
-.ask-input{
-  width:100%;background:rgba(4,8,16,0.6);
-  border:1px solid var(--glass-border);
-  border-radius:var(--r);color:var(--white);
-  font-family:'DM Sans',sans-serif;font-size:var(--fs-base);
-  padding:12px 14px;outline:none;resize:none;
-  min-height:80px;line-height:1.5;
-  transition:border-color .18s;
-}
-.ask-input:focus{border-color:rgba(59,127,245,0.35);}
-.ask-input::placeholder{color:var(--muted2);}
-.ask-btn{
-  margin-top:10px;width:100%;
-  font-size:var(--fs-sm);font-weight:600;letter-spacing:.04em;
-  color:var(--white);
-  background:linear-gradient(135deg,rgba(59,127,245,0.25),rgba(30,60,130,0.3));
-  border:1px solid rgba(59,127,245,0.3);
-  padding:11px;border-radius:var(--r);
-  cursor:pointer;font-family:'DM Sans',sans-serif;
-  transition:all .2s;
-}
-.ask-btn:hover{background:linear-gradient(135deg,rgba(59,127,245,0.35),rgba(30,60,130,0.45));border-color:rgba(59,127,245,0.5);}
-.ask-btn:disabled{opacity:.5;cursor:not-allowed;}
-.ask-keywords{
-  margin:10px 0 6px;display:flex;flex-wrap:wrap;gap:5px;
-}
-.ask-kw{
-  font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:.03em;
-  background:rgba(59,127,245,0.08);border:1px solid rgba(59,127,245,0.18);color:rgba(91,159,255,0.85);
-}
-.ask-answer{
-  padding:14px;border-radius:var(--r);
-  background:rgba(4,8,20,0.5);
-  border:1px solid var(--glass-border);
-  font-size:var(--fs-sm);color:var(--white2);
-  line-height:1.7;margin-bottom:10px;
-  white-space:pre-wrap;
-}
-.ask-evidence-title{font-size:var(--fs-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px;}
-.ask-ev-item{
-  padding:10px 12px;border-radius:var(--r-sm);margin-bottom:4px;
-  background:rgba(6,12,24,0.4);border:1px solid var(--glass-border);
-  cursor:pointer;transition:all .15s;
-}
-.ask-ev-item:hover{background:rgba(59,127,245,0.06);border-color:rgba(59,127,245,0.2);}
-.ask-ev-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:8px;}
-.ask-ev-chat{font-size:var(--fs-xs);font-weight:600;color:var(--accent2);}
-.ask-ev-date{font-size:9px;color:var(--muted2);font-family:'DM Mono',monospace;}
-.ask-ev-text{font-size:var(--fs-xs);color:var(--muted);line-height:1.5;}
-.ask-step{font-size:var(--fs-xs);color:var(--muted2);padding:8px 0;display:flex;align-items:center;gap:8px;}
-.ask-step-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ldot .8s ease-in-out infinite;flex-shrink:0;}
-
-
-
 /* ─── SCROLL FADE IN ──── */
 .fade-in{animation:fadeIn .4s ease forwards;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
@@ -975,7 +912,6 @@ body{
     <div class="gs-card">
       <div class="gs-val" id="gs-total">—</div>
       <div class="gs-label">Total Messages</div>
-      <div class="gs-sub" id="gs-range">—</div>
     </div>
     <div class="gs-card">
       <div class="gs-val" id="gs-replies">—</div>
@@ -1282,19 +1218,6 @@ body{
 
 <!-- GROUP DETAIL (injected dynamically) -->
 
-<!-- ASK AI PAGE -->
-<div class="page" id="page-ask">
-  <div class="page-header-glass">
-    <div class="page-header-title">Ask a Question</div>
-    <div class="page-header-sub">AI-powered insights from your message history</div>
-  </div>
-  <div class="ask-glass">
-    <textarea class="ask-input" id="ask-input" placeholder="Ask anything about the user's activity… e.g. Does the user have a pet? What topics do they talk about most?"></textarea>
-    <button class="ask-btn" id="ask-btn" onclick="doAsk()">Ask AI</button>
-  </div>
-  <div id="ask-results" style="padding:0 16px 16px;"></div>
-</div>
-
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <div class="bnav-glass">
@@ -1343,16 +1266,6 @@ body{
         </svg>
       </div>
       <span class="bnav-label">Media</span>
-    </button>
-    <button class="bnav-item" data-page="ask" onclick="router.go('ask')">
-      <div class="bnav-icon">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.3"/>
-          <path d="M7 7C7 5.9 7.9 5 9 5C10.1 5 11 5.9 11 7C11 8.5 9 9 9 10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-          <circle cx="9" cy="12.5" r="0.8" fill="currentColor"/>
-        </svg>
-      </div>
-      <span class="bnav-label">Ask</span>
     </button>
   </div>
 </div>
@@ -1456,7 +1369,6 @@ const router={
     if(page==='media'&&!this._mediaLoaded){this._mediaLoaded=true;initMediaPage();}
     if(page==='user')initUser(params.id);
     if(page==='search')document.getElementById('search-input')?.focus();
-    if(page==='ask')document.getElementById('ask-input')?.focus();
   },
   back(){this.go('home');}
 };
@@ -1474,7 +1386,6 @@ async function initHome(){
     document.getElementById('gs-reply-rate').textContent=d.reply_rate||'';
     document.getElementById('gs-media-count').textContent=fmt(media);
     document.getElementById('gs-groups-total').textContent=fmt(d.total_groups);
-    document.getElementById('gs-range').textContent=fmtDate(d.date_range?.oldest)+' – '+fmtDate(d.date_range?.newest);
   }catch(e){const ns=document.getElementById('nav-status');if(ns)ns.textContent='Offline';}
 
   const list=document.getElementById('users-list');list.innerHTML='';
@@ -2206,65 +2117,6 @@ function setMediaKind(kind,btn){
   btn.closest('.filter-glass').querySelectorAll('.sort-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');loadMediaPage(true);
 }
-
-/* ══ ASK AI PAGE ══ */
-async function doAsk(){
-  const q=document.getElementById('ask-input').value.trim();
-  if(!q)return;
-  const btn=document.getElementById('ask-btn');
-  const results=document.getElementById('ask-results');
-  btn.disabled=true;btn.textContent='Thinking…';
-  results.innerHTML=`
-    <div class="ask-step"><div class="ask-step-dot"></div>Extracting keywords from your question…</div>
-  `;
-  try{
-    const r=await fetch(`${API}/ask`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({question:q})
-    });
-    const d=await r.json();
-    if(d.error){results.innerHTML=`<div class="empty-state">Error: ${d.error}</div>`;btn.disabled=false;btn.textContent='Ask AI';return;}
-
-    let html='';
-    // Keywords
-    if(d.keywords?.length){
-      html+=`<div class="ask-evidence-title">Keywords searched (${d.keywords.length})</div>`;
-      html+=`<div class="ask-keywords">${d.keywords.map(k=>`<span class="ask-kw">${k}</span>`).join('')}</div>`;
-    }
-    // Answer
-    html+=`<div class="ask-evidence-title">Answer</div>`;
-    html+=`<div class="ask-answer">${d.answer||'No answer generated.'}</div>`;
-    // Evidence
-    if(d.evidence?.length){
-      html+=`<div class="ask-evidence-title">Evidence messages (${d.evidence.length})</div>`;
-      results.innerHTML=html;
-      d.evidence.forEach(ev=>{
-        const evEl=document.createElement('div');evEl.className='ask-ev-item';
-        const link=ev.link||null;
-        if(link){evEl.style.cursor='pointer';evEl.onclick=()=>window.open(link,'_blank');}
-        evEl.innerHTML=`
-          <div class="ask-ev-head">
-            <span class="ask-ev-chat">${ev.chatTitle||'Unknown'}${ev.chatTag?' ('+ev.chatTag+')':''}</span>
-            <span class="ask-ev-date">${fmtDateTime(ev.date)}</span>
-          </div>
-          <div class="ask-ev-text">${(ev.text||'').slice(0,120)}${ev.text&&ev.text.length>120?'…':''}</div>
-          ${link?`<div style="margin-top:4px;font-size:9px;color:var(--accent2);">↗ Open message #${ev.messageid}</div>`:''}
-        `;
-        results.appendChild(evEl);
-      });
-    } else {
-      results.innerHTML=html;
-    }
-  }catch(e){
-    results.innerHTML=`<div class="empty-state">Request failed. Is the server running?</div>`;
-  }
-  btn.disabled=false;btn.textContent='Ask AI';
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.ctrlKey&&router.current==='ask')doAsk();
-});
 
 /* ══ BOOT ══ */
 ensureGroupDetailPage();
